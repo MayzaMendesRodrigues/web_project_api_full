@@ -1,0 +1,16 @@
+{
+"extends": ["airbnb-base"],
+"plugins": ["import"],
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+},
+"rules": {
+    "no-underscore-dangle": "off" ,// permite __dirname e __filename recriados
+    "no-console": "off",     // desativa a regra de console.log
+
+    "quotes": ["error", "single", { "avoidEscape": true }],
+    "import/extensions": "off"
+
+  }
+}

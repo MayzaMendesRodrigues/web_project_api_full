@@ -1,0 +1,26 @@
+.form__title {
+  font-weight: 900;
+  font-size: 24px;
+  color: white;
+  margin-top: 60px;
+  margin-bottom: 50px;
+  text-align: center;
+}
+
+.form__subtitle {
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.form__button {
+  width: 358px;
+  height: 50px;
+  background: rgba(255, 255, 255, 1);
+
+  color: rgb(0, 0, 0.1);
+  border: 0;
+  border-radius: 2px;
+  font-size: 18px;
+  margin-top: 216px;
+  cursor: pointer;
+}
