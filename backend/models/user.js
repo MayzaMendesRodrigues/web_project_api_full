@@ -1,7 +1,5 @@
 import mongoose from 'mongoose';
-import validator from 'validator'
-
-const urlRegex = /^https?:\/\/(?:www\.)?(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.)+[A-Za-z]{2,}(?:\/.*)?$/;
+import validator from 'validator';
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -9,21 +7,21 @@ const userSchema = new mongoose.Schema({
     required: true,
     minlength: 2,
     maxlength: 30,
-    default: 'Jacques Cousteau'
+    default: 'Jacques Cousteau',
   },
   about: {
     type: String,
     required: true,
     minlength: 2,
     maxlength: 30,
-    default: 'Explorer'
+    default: 'Explorer',
   },
   avatar: {
     type: String,
     required: true,
     default: 'https://practicum-content.s3.us-west-1.amazonaws.com/resources/moved_avatar_1604080799.jpg',
     validate: {
-      validator: (value) => urlRegex.test(value),
+      validator: validator.isURL,
     },
     message: (props) => `${props.value} não é uma URL válida`,
   },
@@ -33,15 +31,15 @@ const userSchema = new mongoose.Schema({
     unique: true,
     validate: {
       validator: validator.isEmail,
-      message: 'Email invalido'
-    }
+      message: 'Email invalido',
+    },
   },
 
   password: {
-type:String,
-required:true,
-select: false // nao retorna a senha
-  }
+    type: String,
+    required: true,
+    select: false, // nao retorna a senha
+  },
 });
 const User = mongoose.model('user', userSchema);
 

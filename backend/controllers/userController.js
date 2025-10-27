@@ -1,26 +1,30 @@
 import mongoose from 'mongoose';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
 import User from '../models/user.js';
-import bcrypt from "bcryptjs"
 
+dotenv.config();
 
 const createUser = async (req, res) => {
   try {
-    const { name, about, avatar, email, password } = req.body;
+    const {
+      name, about, avatar, email, password,
+    } = req.body;
 
-    if ( !email || password) {
+    if (!email || password) {
       return res.status(400).json({ message: 'Email e senha são obrigatórios' });
     }
-const hash = bcrypt.hash(password, 10)
-const user = User.create({ name, about, avatar, email, password: hash })
+    const hash = bcrypt.hash(password, 10);
+    const user = User.create({
+      name, about, avatar, email, password: hash,
+    });
 
-
-    const {password: _ , ...userWithoutPassword } = user.toObject()
-    res.status(201).send({data: userWithoutPassword})
-
-   }catch (error)  {
-
-    if(error.code === 11000){
-      return res.status(409).json({message: 'Email já está em uso'})
+    const { password: _, ...userWithoutPassword } = user.toObject();
+    res.status(201).send({ data: userWithoutPassword });
+  } catch (error) {
+    if (error.code === 11000) {
+      return res.status(409).json({ message: 'Email já está em uso' });
     }
     if (error instanceof mongoose.Error.ValidationError) {
       return res.status(400).json({ message: error.message });
@@ -119,20 +123,28 @@ const updateAvatar = async (req, res) => {
 };
 
 const login = (req, res) => {
-  const {email, password} = req.body;
+  const { email, password } = req.body;
 
-    if ( !email || password) {
-      return res.status(400).json({ message: 'Email e senha são obrigatórios' });
-    }
-  try{
-    User.findOne({email}).select('+password').then((user) => {
-      if(!user){
-        return res.status(401).json({message: 'email ou senha incorreta'})
-      }
-    })
+  if (!email || password) {
+    return res.status(400).json({ message: 'Email e senha são obrigatórios' });
   }
-}
+  return User.findOne({ email }).select('+password').then((user) => {
+    if (!user) {
+      return res.status(401).json({ message: 'email ou senha incorreta' });
+    }
+    return bcrypt.compare(password, user.password)
+      .then((isMatch) => {
+        if (!isMatch) {
+          return res.status(401).json({ message: 'Email ou senha incorretos' });
+        }
+        const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
+        return res.send({ token });
+      }).catch((error) => {
+        res.status(500).json({ message: 'Erro interno do servidor', error });
+      });
+  });
+};
 
 export {
-  createUser, getUser, getUserById, updateUser, updateAvatar,
+  createUser, getUser, getUserById, updateUser, updateAvatar, login,
 };
