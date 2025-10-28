@@ -12,16 +12,16 @@ const createUser = async (req, res) => {
       name, about, avatar, email, password,
     } = req.body;
 
-    if (!email || password) {
+    if (!email || !password) {
       return res.status(400).json({ message: 'Email e senha são obrigatórios' });
     }
-    const hash = bcrypt.hash(password, 10);
-    const user = User.create({
+    const hash = await bcrypt.hash(password, 10);
+    const user = await User.create({
       name, about, avatar, email, password: hash,
     });
 
     const { password: _, ...userWithoutPassword } = user.toObject();
-    res.status(201).send({ data: userWithoutPassword });
+    return res.status(201).send({ data: userWithoutPassword });
   } catch (error) {
     if (error.code === 11000) {
       return res.status(409).json({ message: 'Email já está em uso' });

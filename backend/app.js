@@ -3,6 +3,7 @@ import express from 'express';
 import userRouter from './routes/users.js';
 import cardRouter from './routes/cards.js';
 import logger from './utils/logger.js';
+import { createUser, login } from './controllers/userController.js';
 
 async function connectMongoDb() {
   try {
@@ -25,6 +26,9 @@ app.use((req, res, next) => {
 
   next();
 });
+
+app.post('/signin', login);
+app.post('/signup', createUser);
 
 app.use('/users', userRouter);
 app.use('/cards', cardRouter);
