@@ -35,8 +35,8 @@ const createUser = async (req, res) => {
 
 const getUser = async (req, res) => {
   try {
-    const users = await User.find({});
-    res.json(users);
+    const user = await User.find({});
+    res.json({ data: user });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
