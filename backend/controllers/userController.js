@@ -125,7 +125,7 @@ const updateAvatar = async (req, res) => {
 const login = (req, res) => {
   const { email, password } = req.body;
 
-  if (!email || password) {
+  if (!email || !password) {
     return res.status(400).json({ message: 'Email e senha são obrigatórios' });
   }
   return User.findOne({ email }).select('+password').then((user) => {

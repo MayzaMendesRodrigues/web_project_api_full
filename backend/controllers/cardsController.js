@@ -30,11 +30,14 @@ const createCard = async (req, res) => {
 
 const deleteCard = async (req, res) => {
   try {
-    console.log('PARAMS ID:', req.params.id);
     const card = await Cards.findByIdAndDelete(req.params.id);
 
     if (!card) {
       return res.status(404).json({ message: 'Cartão não encontrado.' });
+    }
+
+    if (card.owner.toString() !== req.user._id) {
+      return res.status(403).json({ message: 'Voce nao tem permissao para deletar este card' });
     }
     return res.status(204).send();
   } catch (error) {
