@@ -1,16 +1,17 @@
 import jwt from 'jsonwebtoken';
+import Unauthorized from '../errors/Unauthorized';
 
 export default function auth(req, res, next) {
   const { authorization } = req.headers;
 
   if (!authorization) {
-    return res.status(401).json({ message: 'Token de autorizacao e necessario' });
+    throw new Unauthorized('Token de autorizacao e necessario');
   }
 
   const token = authorization.replace('Bearer ', '');
 
   if (!token) {
-    return res.status(401).json({ message: 'Token invalido' });
+    throw new Unauthorized('Token invalido');
   }
 
   let payload;
@@ -18,7 +19,7 @@ export default function auth(req, res, next) {
   try {
     payload = jwt.verify(token, process.env.JWT_SECRET);
   } catch (error) {
-    return res.status(401).json({ message: 'Token invalido ou expirado' });
+    throw new Unauthorized('Token invalido ou expirado');
   }
 
   req.user = payload;
