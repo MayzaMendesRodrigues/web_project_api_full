@@ -127,13 +127,13 @@ const updateAvatar = async (req, res) => {
   }
 };
 
-const login = (req, res) => {
+const login  = async (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
     throw new BadRequest('Email e senha são obrigatórios');
   }
-  return User.findOne({ email }).select('+password').then((user) => {
+  return await User.findOne({ email }).select('+password').then((user) => {
     if (!user) {
       throw new Unauthorized('Email ou senha incorretos');
     }
