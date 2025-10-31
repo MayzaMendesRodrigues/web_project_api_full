@@ -11,7 +11,7 @@ import Conflict from '../errors/Conflict.js';
 
 dotenv.config();
 
-const createUser = async (req, res) => {
+export const createUser = async (req, res) => {
   try {
     const {
       name, about, avatar, email, password,
@@ -38,7 +38,7 @@ const createUser = async (req, res) => {
   }
 };
 
-const getUser = async (req, res) => {
+export const getUser = async (req, res) => {
   try {
     const user = await User.find({});
     res.json({ data: user });
@@ -47,7 +47,7 @@ const getUser = async (req, res) => {
   }
 };
 
-const getUserById = async (req, res, next) => {
+export const getUserById = async (req, res, next) => {
   try {
     const { id } = req.params;
     const users = await User.findById(id);
@@ -61,7 +61,7 @@ const getUserById = async (req, res, next) => {
   }
 };
 
-const updateUser = async (req, res) => {
+export const updateUser = async (req, res) => {
   try {
     const { name, about } = req.body;
     if (!name || !about) {
@@ -93,7 +93,7 @@ const updateUser = async (req, res) => {
   }
 };
 
-const updateAvatar = async (req, res) => {
+export const updateAvatar = async (req, res) => {
   try {
     const { avatar } = req.body;
 
@@ -127,30 +127,35 @@ const updateAvatar = async (req, res) => {
   }
 };
 
-const login  = async (req, res) => {
-  const { email, password } = req.body;
+export const login = async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
 
-  if (!email || !password) {
-    throw new BadRequest('Email e senha são obrigatórios');
-  }
-  return await User.findOne({ email }).select('+password').then((user) => {
+    if (!email || !password) {
+      throw new BadRequest('Email e senha são obrigatórios');
+    }
+
+    const user = await User.findOne({ email }).select('+password');
+
     if (!user) {
       throw new Unauthorized('Email ou senha incorretos');
     }
-    return bcrypt.compare(password, user.password)
-      .then((isMatch) => {
-        if (!isMatch) {
-          throw new Unauthorized('Email ou senha incorretos');
-        }
-        const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
-        return res.send({ token });
-      }).catch((error) => {
-        console.error(error);
-        throw new InternalServerError('Erro interno do servidor');
-      });
-  });
-};
 
-export default {
-  createUser, getUser, getUserById, updateUser, updateAvatar, login,
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if (!isMatch) {
+      throw new Unauthorized('Email ou senha incorretos');
+    }
+
+    const token = jwt.sign(
+      { _id: user._id },
+      process.env.JWT_SECRET,
+      { expiresIn: '7d' },
+    );
+
+    return res.send({ token });
+  } catch (error) {
+    console.error('Erro no login:', error);
+    return next(error);
+  }
 };

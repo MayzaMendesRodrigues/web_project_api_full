@@ -11,6 +11,9 @@
 
     "quotes": ["error", "single", { "avoidEscape": true }],
     "import/extensions": "off",
-    "no-unused-vars": ["error", { "argsIgnorePattern": "next" }]
+    "no-unused-vars": [
+      "error",
+      { "argsIgnorePattern": "^_|next", "varsIgnorePattern": "^_" }
+    ]
   }
 }

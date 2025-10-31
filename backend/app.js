@@ -1,13 +1,13 @@
 import mongoose from 'mongoose';
 import express from 'express';
 import validator from 'validator';
+import { celebrate, Joi, Segments } from 'celebrate';
 import userRouter from './routes/users.js';
 import cardRouter from './routes/cards.js';
 import auth from './middlewares/auth.js';
-import validator from 'validator';
-import { celebrate, Joi, Segments, Errors } from 'celebrate';
-import {login} from './controllers/userController.js'
-
+import { login, createUser } from './controllers/userController.js';
+import InternalServerError from './errors/InternalServerError.js';
+import { errorLogger, requestLogger } from './middlewares/logger.js';
 
 const app = express();
 
@@ -28,26 +28,33 @@ async function connectMongoDb() {
 }
 
 app.use(express.json());
+app.use(requestLogger);
 
-app.post('/signin', celebrate({
-  [Segments.BODY]: Joi.object().keys({
-    email: Joi.string().required().email(),
-    password: Joi.string().required(),
-  })
-}),
-login
+app.post(
+  '/signin',
+  celebrate({
+    [Segments.BODY]: Joi.object().keys({
+      email: Joi.string().required().email(),
+      password: Joi.string().required(),
+    }),
+  }),
+  login,
 );
-app.post('/signup', celebrate({
-  [Segments.BODY]: Joi.object().keys({
-    email:Joi.string().required().email(),
-    password:Joi.string().required(),
-    name: Joi.string().min(2).max(30),
-    about: Joi.string().min(2).max(30),
-    avatar: Joi.string().custom(validateURL)
-  })
-}),
-createUser
+app.post(
+  '/signup',
+  celebrate({
+    [Segments.BODY]: Joi.object().keys({
+      email: Joi.string().required().email(),
+      password: Joi.string().required(),
+      name: Joi.string().min(2).max(30),
+      about: Joi.string().min(2).max(30),
+      avatar: Joi.string().custom(validateURL),
+    }),
+  }),
+  createUser,
 );
+
+app.use(errorLogger);
 
 app.use(auth);
 
@@ -59,7 +66,14 @@ app.use('/cards', cardRouter);
 
 // Middleware de Tratamento de Erro do Celebrate
 
-app.use(Errors())
+app.use((err, req, res, next) => {
+  let { statusCode = 500, message } = err;
+  if (!(err instanceof InternalServerError) && statusCode === 500) {
+    statusCode = 500;
+    message = 'Ocorreu um erro no servidor';
+  }
+  res.status(statusCode).json({ message });
+});
 
 app.listen(port, () => {
   console.log(`servidor rodando em http://localhost:${port}`);
