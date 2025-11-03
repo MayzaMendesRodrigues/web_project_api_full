@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import Unauthorized from '../errors/Unauthorized';
+import Unauthorized from '../errors/Unauthorized.js';
 
 export default function auth(req, res, next) {
   const { authorization } = req.headers;

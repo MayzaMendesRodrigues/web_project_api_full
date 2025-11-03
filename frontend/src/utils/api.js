@@ -124,9 +124,8 @@ async getUserInfo  ()  {
 }
 
 export const api = new Api({
-  baseUrl: "https://around-api.pt-br.tripleten-services.com/v1",
+  baseUrl: import.meta.env.VITE_API_URL,
   headers: {
-    authorization: "a24baca2-87f5-4e00-a377-0cfb8daf3475",
     "Content-Type": "application/json",
   },
 });

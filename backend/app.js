@@ -54,7 +54,7 @@ app.use(errorLogger);
 app.use(errors());
 
 connectMongoDb();
-const port = 3000;
+const port = 3001;
 
 app.use('/users', userRouter);
 app.use('/cards', cardRouter);

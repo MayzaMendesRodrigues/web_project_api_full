@@ -1,5 +1,5 @@
 
-export const BASE_URL = "https://se-register-api.en.tripleten-services.com/v1";
+export const BASE_URL = import.meta.env.VITE_API_URL
 
 export const authorize = async (email, password) => {
   return fetch(`${BASE_URL}/signin`, {
