@@ -1,7 +1,9 @@
 import mongoose from 'mongoose';
 import express from 'express';
-import validator from 'validator';
-import { celebrate, Joi, Segments } from 'celebrate';
+import {
+  celebrate, errors, Joi, Segments,
+} from 'celebrate';
+import cors from 'cors';
 import userRouter from './routes/users.js';
 import cardRouter from './routes/cards.js';
 import auth from './middlewares/auth.js';
@@ -10,14 +12,7 @@ import InternalServerError from './errors/InternalServerError.js';
 import { errorLogger, requestLogger } from './middlewares/logger.js';
 
 const app = express();
-
-const validateURL = (value, helpers) => {
-  if (validator.isURL(value)) {
-    return value;
-  }
-
-  return helpers.error('string.uri');
-};
+app.use(cors());
 
 async function connectMongoDb() {
   try {
@@ -48,15 +43,15 @@ app.post(
       password: Joi.string().required(),
       name: Joi.string().min(2).max(30),
       about: Joi.string().min(2).max(30),
-      avatar: Joi.string().custom(validateURL),
+      avatar: Joi.string().uri(),
     }),
   }),
   createUser,
 );
+app.use(auth);
 
 app.use(errorLogger);
-
-app.use(auth);
+app.use(errors());
 
 connectMongoDb();
 const port = 3000;
