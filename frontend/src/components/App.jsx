@@ -8,7 +8,7 @@ import {
   useLocation,
   useNavigate,
 } from "react-router-dom";
-import { getToken, setToken } from "../utils/token";
+import { setToken } from "../utils/token";
 import { useContext, useEffect, useState } from "react";
 
 import Login from "../screens/Login.jsx";
@@ -67,28 +67,30 @@ export default function App() {
         navigate("/");
         setUserEmail(email);
         localStorage.setItem("email", email);
+        api.updateAuthorization(data.token);
       })
       .catch((error) => alert("Email ou senha incorreta", error));
   };
-  useEffect(() => {
-    if (!isLoggedIn) {
-      const jwt = getToken();
-      if (!jwt) {
-        return;
-      }
-      setIsLoggedIn(true);
+  // useEffect(() => {
+  //   if (!isLoggedIn) {
+  //     const jwt = getToken();
+  //     if (!jwt) {
+  //       return;
+  //     }
 
-      api
-        .getUserInfo(jwt)
-        .then((profile) => {
-          console.log("Profile:", profile);
-        })
-        .catch((error) => {
-          console.error(error);
-          setIsLoggedIn(false);
-        });
-    }
-  }, [setIsLoggedIn, isLoggedIn]);
+  //     api
+  //       .getUserInfo()
+  //       .then((profile) => {
+  //         console.log("Profile:", profile);
+  //         setIsLoggedIn(true);
+  //       })
+
+  //       .catch((error) => {
+  //         console.error(error);
+  //         setIsLoggedIn(false);
+  //       });
+  //   }
+  // }, []);
 
   useEffect(() => {
     if (!userEmail) {

@@ -50,14 +50,15 @@ app.post(
 );
 app.use(auth);
 
-app.use(errorLogger);
-app.use(errors());
-
 connectMongoDb();
 const port = 3001;
 
 app.use('/users', userRouter);
 app.use('/cards', cardRouter);
+
+// Logger de erros e middleware do Celebrate devem vir APOS as rotas
+app.use(errorLogger);
+app.use(errors());
 
 // Middleware de Tratamento de Erro do Celebrate
 

@@ -21,7 +21,7 @@ export default function auth(req, res, next) {
   } catch (error) {
     throw new Unauthorized('Token invalido ou expirado');
   }
-
+  console.log('payload', payload);
   req.user = payload;
   return next();
 }

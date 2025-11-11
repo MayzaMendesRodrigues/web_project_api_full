@@ -32,18 +32,21 @@ export const createUser = async (req, res) => {
       throw new Conflict('Email já está em uso');
     }
     if (error instanceof mongoose.Error.ValidationError) {
-      return res.status().json({ message: error.message });
+      return res.status(400).json({ message: error.message });
     }
     throw new InternalServerError('Erro interno do servidor');
   }
 };
 
 export const getUser = async (req, res) => {
+  console.log('entrei no getUser', req.user);
   try {
-    const user = await User.find({});
-    res.json({ data: user });
+    const user = await User.findById(req.user.id);
+
+    return res.json({ data: user });
   } catch (error) {
-    throw new InternalServerError(' Usuario nao encontrado ');
+    return res.json({ message: 'error' });
+    // throw new InternalServerError(' Usuario nao encontrado ');
   }
 };
 

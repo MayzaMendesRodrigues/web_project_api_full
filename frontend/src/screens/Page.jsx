@@ -1,12 +1,12 @@
 import { useEffect, useState, useContext } from "react";
 import { api } from "../utils/api";
 import Main from "../components/Main/Main.jsx";
-import { getToken } from "../utils/token.js";
 import CurrentUserContext from "../contexts/CurrentUserContext.jsx";
 
 export default function Page() {
   const { userData, setUserData, cards, setCards } =
     useContext(CurrentUserContext);
+
   const [popup, setPopup] = useState(null);
 
   async function handleCardDelete(card) {
@@ -47,9 +47,7 @@ export default function Page() {
   useEffect(() => {
     async function loadUser() {
       try {
-        const token = getToken();
-        if (!token) return;
-        const response = await api.getUserInfo(token);
+        const response = await api.getUserInfo();
 
         setUserData(response);
       } catch (error) {

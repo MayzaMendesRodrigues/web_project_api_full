@@ -1,11 +1,20 @@
 import { api } from "../utils/api";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { getToken } from "../utils/token";
 import CurrentUserContext from "./CurrentUserContext";
 
 const UserProviders = ({ children }) => {
   const [userData, setUserData] = useState(null);
   const [cards, setCards] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const jwt = getToken();
+    if (jwt) {
+      api.updateAuthorization(jwt);
+      setIsLoggedIn(true);
+    }
+  }, []);
 
   const handleAddPlaceSubmit = async (data) => {
     try {

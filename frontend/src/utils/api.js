@@ -4,13 +4,24 @@ class Api {
     this.headers = headers;
   }
 
+async updateAuthorization(token){
+    if (!token) {
+    console.warn("Nenhum token fornecido para atualização.");
+    return;
+  }
+  
+this.headers.Authorization =  `Bearer ${token}`
+console.log("AQUI ESTA O TOKEN", this.headers.Authorization)
+}
 
 
-async getUserInfo  ()  {
+async getUserInfo()  {
     const res = await fetch(`${this.baseUrl}/users/me`, {
       method: "GET",
       headers: this.headers
     });
+
+    console.log("entrei no front", res)
     if (!res.ok) {
       throw new Error(`Error: ${res.status}`);
     }
@@ -50,7 +61,7 @@ async getUserInfo  ()  {
   }
 
   async getInicialCards() {
-    const res = await fetch(`${this.baseUrl}/cards/`, {
+    const res = await fetch(`${this.baseUrl}/cards`, {
       method: "GET",
       headers: this.headers,
     });

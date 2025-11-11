@@ -17,12 +17,14 @@ router.get('/', getCards);
 
 router.delete('/:id', celebrate({
   [Segments.PARAMS]: Joi.object().keys({
-    _id: Joi.string().hex().length(24).required(),
+    id: Joi.string().hex().length(24).required(),
   }),
 }), deleteCard);
 
 router.put('/:cardId/likes', celebrate({
-  [Segments.PARAMS]: Joi.string().hex().length(24).required(),
+  [Segments.PARAMS]: Joi.object().keys({
+    cardId: Joi.string().hex().length(24).required(),
+  }),
 }), likeCard);
 
 router.delete('/:cardId/likes', celebrate({
