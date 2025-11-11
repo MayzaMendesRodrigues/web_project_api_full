@@ -90,7 +90,7 @@ export default function Main({
                   key={card._id}
                   card={card}
                   handleOpenPopup={(img) => onOpenPopup(imagePopup(img))}
-                  isLiked={card.isLiked}
+                  isLiked={card.likes.some((userId) => userId === userData._id)}
                   onCardLike={onCardLike}
                   onCardDelete={onCardDelete}
                 />

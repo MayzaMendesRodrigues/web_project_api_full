@@ -19,7 +19,7 @@ export default function Page() {
   }
 
   async function handleCardLike(card) {
-    const isLiked = card.isLiked;
+    const isLiked = card.likes.some((userId) => userId === userData._id);
     try {
       const newCard = await api.changeLikeCardStatus(card._id, !isLiked);
       setCards((state) => state.map((c) => (c._id === card._id ? newCard : c)));

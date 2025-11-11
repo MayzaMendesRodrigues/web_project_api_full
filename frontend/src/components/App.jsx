@@ -10,6 +10,7 @@ import {
 } from "react-router-dom";
 import { setToken } from "../utils/token";
 import { useContext, useEffect, useState } from "react";
+import { getToken } from "../utils/token.js";
 
 import Login from "../screens/Login.jsx";
 import Page from "../screens/Page.jsx";
@@ -71,26 +72,17 @@ export default function App() {
       })
       .catch((error) => alert("Email ou senha incorreta", error));
   };
-  // useEffect(() => {
-  //   if (!isLoggedIn) {
-  //     const jwt = getToken();
-  //     if (!jwt) {
-  //       return;
-  //     }
-
-  //     api
-  //       .getUserInfo()
-  //       .then((profile) => {
-  //         console.log("Profile:", profile);
-  //         setIsLoggedIn(true);
-  //       })
-
-  //       .catch((error) => {
-  //         console.error(error);
-  //         setIsLoggedIn(false);
-  //       });
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (!isLoggedIn) {
+      const jwt = getToken();
+      if (!jwt) {
+        return;
+      }
+      navigate("/");
+      setIsLoggedIn(true);
+      api.updateAuthorization(jwt);
+    }
+  }, [isLoggedIn]);
 
   useEffect(() => {
     if (!userEmail) {

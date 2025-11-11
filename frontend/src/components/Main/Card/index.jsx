@@ -1,19 +1,35 @@
-
-export default function Card({ card, handleOpenPopup, isLiked, onCardLike, onCardDelete }) {
+import { useContext } from "react";
+import CurrentUserContext from "../../../contexts/CurrentUserContext.jsx";
+export default function Card({
+  card,
+  handleOpenPopup,
+  isLiked,
+  onCardLike,
+  onCardDelete,
+}) {
   const { name, link } = card;
 
-  const cardLikeButtonClassName = `cards__like ${isLiked ? "active" : null}`
+  const { userData } = useContext(CurrentUserContext);
+  console.log("userData no card:", userData);
+  const showTrashButton = card.owner === userData._id;
+  const cardLikeButtonClassName = `cards__like ${isLiked ? "active" : null}`;
 
   function handleLikeCard() {
-  onCardLike(card)
+    onCardLike(card);
   }
 
-  function handleDeleteCard(){
-    onCardDelete(card)
+  function handleDeleteCard() {
+    onCardDelete(card);
   }
   return (
     <li className="card">
-      <button aria-label="Excluir post" className="cards__trash" onClick={handleDeleteCard}></button>
+      {showTrashButton && (
+        <button
+          aria-label="Excluir post"
+          className="cards__trash"
+          onClick={handleDeleteCard}
+        ></button>
+      )}
       <img
         src={link}
         alt={name}

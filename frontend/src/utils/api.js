@@ -18,10 +18,10 @@ console.log("AQUI ESTA O TOKEN", this.headers.Authorization)
 async getUserInfo()  {
     const res = await fetch(`${this.baseUrl}/users/me`, {
       method: "GET",
-      headers: this.headers
+      headers: this.headers,
     });
 
-    console.log("entrei no front", res)
+    console.log("entrei no front", res);
     if (!res.ok) {
       throw new Error(`Error: ${res.status}`);
     }

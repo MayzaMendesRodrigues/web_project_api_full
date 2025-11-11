@@ -38,15 +38,19 @@ export const createUser = async (req, res) => {
   }
 };
 
-export const getUser = async (req, res) => {
+export const getUser = async (req, res, next) => {
   console.log('entrei no getUser', req.user);
   try {
-    const user = await User.findById(req.user.id);
+    const id = req.user._id || req.user.id;
+    const user = await User.findById(id);
 
-    return res.json({ data: user });
+    if (!user) {
+      throw new NotFoundError('Usuário não encontrado');
+    }
+
+    return res.json(user);
   } catch (error) {
-    return res.json({ message: 'error' });
-    // throw new InternalServerError(' Usuario nao encontrado ');
+    return next(error);
   }
 };
 

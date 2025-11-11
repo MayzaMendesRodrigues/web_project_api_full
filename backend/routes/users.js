@@ -7,7 +7,7 @@ import {
 const router = Router();
 
 // router.post('/', createUser);
-
+router.get('/me', getUser);
 router.get('/:id', celebrate({
   [Segments.PARAMS]: Joi.object().keys({
     id: Joi.string().hex().length(24).required(),
@@ -15,7 +15,6 @@ router.get('/:id', celebrate({
 }), getUserById);
 
 // Rotas relativas ao usuário autenticado precisam usar paths a partir do router
-router.get('/me', getUser);
 
 router.patch('/me', celebrate({
   [Segments.BODY]: Joi.object().keys({
