@@ -12,7 +12,12 @@ import InternalServerError from './errors/InternalServerError.js';
 import { errorLogger, requestLogger } from './middlewares/logger.js';
 
 const app = express();
-app.use(cors());
+const corsOptions = {
+  origin: ['http://localhost:3000', 'https://mayzaynara.com', 'https://www.mayzaynara.com'],
+  methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
+  allwedHeaders: ['Content-Type', 'Authorization'],
+};
+app.use(cors(corsOptions));
 
 async function connectMongoDb() {
   try {
