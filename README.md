@@ -26,7 +26,7 @@ A complete **full-stack web application** featuring **authentication**, **card m
 
 ---
 
-# 🚀 About the Project
+#  About the Project
 
 This application allows users to:
 
@@ -40,11 +40,11 @@ Built with a clean architecture, secure practices, and a scalable structure.
 
 ---
 
-# 🛠️ Technologies Used
+#  Technologies Used
 
 ---
 
-## 🟦 Backend (Node.js)
+##  Backend (Node.js)
 
 ### **Framework & Runtime**
 
@@ -72,7 +72,7 @@ Built with a clean architecture, secure practices, and a scalable structure.
 
 ---
 
-## 🟩 Frontend (React)
+##  Frontend (React)
 
 ### **Framework & Build Tools**
 
@@ -92,7 +92,7 @@ Built with a clean architecture, secure practices, and a scalable structure.
 
 ---
 
-## ⚙️ DevOps & Deployment
+##  DevOps & Deployment
 
 ### **Server & Hosting**
 
@@ -117,7 +117,7 @@ Built with a clean architecture, secure practices, and a scalable structure.
 
 ---
 
-## 🧰 Development Tools
+##  Development Tools
 
 ### **Version Control**
 
@@ -136,7 +136,7 @@ Built with a clean architecture, secure practices, and a scalable structure.
 
 ---
 
-## 🧪 Testing & Debug Tools
+##  Testing & Debug Tools
 
 *(Automated tests coming soon)*
 
@@ -153,7 +153,7 @@ Built with a clean architecture, secure practices, and a scalable structure.
 
 ---
 
-## 🌐 Protocols & Standards
+##  Protocols & Standards
 
 ### **Web Standards**
 
@@ -169,7 +169,7 @@ Built with a clean architecture, secure practices, and a scalable structure.
 
 ---
 
-# 🔑 Environment Variables
+#  Environment Variables
 
 | Variable      | Description               |
 | ------------- | ------------------------- |
@@ -179,7 +179,7 @@ Built with a clean architecture, secure practices, and a scalable structure.
 
 ---
 
-# 📁 Project Structure
+#  Project Structure
 
 ```
 web_project_api_full/
@@ -200,7 +200,7 @@ web_project_api_full/
 
 ---
 
-# 🔧 Installation & Setup
+#  Installation & Setup
 
 ## 1. Clone the Repository
 
@@ -237,7 +237,7 @@ npm install
 
 ---
 
-# 🏃 Running the Project
+#  Running the Project
 
 ## Backend
 
@@ -255,7 +255,7 @@ npm run dev
 
 ---
 
-# 🟩 Production with PM2
+#  Production with PM2
 
 ```bash
 npm install -g pm2
@@ -266,7 +266,7 @@ pm2 logs
 
 ---
 
-# 🌐 Deployment
+#  Deployment
 
 ### Cloud Server
 
@@ -284,7 +284,7 @@ pm2 logs
 
 ---
 
-# 📎 License
+#  License
 
 This project is licensed under the **MIT License**.
 
