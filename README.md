@@ -290,8 +290,3 @@ This project is licensed under the **MIT License**.
 
 ---
 
-Quer que eu gere também:
-✅ uma **versão com screenshots**,
-✅ uma **versão com GIF** mostrando o app,
-ou
-✅ uma **versão com tabela de endpoints da API**?
